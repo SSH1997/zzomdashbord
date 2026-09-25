@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로젝트 좀보이드 - 지구별 캐릭터 대시보드</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Banner & Header -->
+    <header class="main-header">
+      <div class="header-overlay"></div>
+      <div class="header-content">
+        <div class="logo-area">
+          <div class="hazard-badge"><i class="fa-solid fa-biohazard"></i> SURVIVAL RECORD</div>
+          <h1>PROJECT ZOMBOID</h1>
+          <p class="subtitle">지구별 생존자 기록 및 킬 수 대시보드</p>
+        </div>
+        <div class="data-update-notice">
+          <i class="fa-solid fa-code-commit"></i>
+          <span>Data Managed via <code>data.js</code></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Overview Stats Cards -->
+    <section class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-icon earth-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">총 지구 (회차)</span>
+          <span class="stat-value" id="stat-total-earths">0</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon char-icon"><i class="fa-solid fa-user-group"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">총 생존자 (캐릭터)</span>
+          <span class="stat-value" id="stat-total-chars">0</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon kill-icon"><i class="fa-solid fa-skull"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">총 처치한 좀비 수</span>
+          <span class="stat-value" id="stat-total-kills">0</span>
+        </div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-icon trophy-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="stat-info">
+          <span class="stat-label">최다 킬 생존자</span>
+          <span class="stat-value char-name-value" id="stat-top-killer">-</span>
+          <span class="stat-subtext" id="stat-top-killer-kills">0 Kills</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+      <!-- Filter & Search Controls Bar -->
+      <div class="controls-card">
+        <!-- Earth Selector Tabs -->
+        <div class="earth-tabs-wrapper">
+          <span class="control-label"><i class="fa-solid fa-map-location-dot"></i> 지구 선택:</span>
+          <div class="earth-tabs" id="earth-tabs">
+            <!-- Tabs dynamically injected by JS -->
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <!-- Search Box -->
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="이름, 직업, 특성, 메모 검색...">
+            <button id="clear-search-btn" class="clear-btn" title="검색어 초기화"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="filter-group">
+            <label for="status-filter"><i class="fa-solid fa-heart-pulse"></i> 상태:</label>
+            <select id="status-filter">
+              <option value="all">전체 상태</option>
+              <option value="생존">🟢 생존</option>
+              <option value="사망">🔴 사망</option>
+              <option value="실종">🟡 실종</option>
+            </select>
+          </div>
+
+          <!-- Sort Selector -->
+          <div class="filter-group">
+            <label for="sort-select"><i class="fa-solid fa-sort"></i> 정렬:</label>
+            <select id="sort-select">
+              <option value="kills-desc">킬 수 높은순 🔥</option>
+              <option value="kills-asc">킬 수 낮은순</option>
+              <option value="name-asc">이름순 (가나다)</option>
+              <option value="earth-asc">지구 순서</option>
+            </select>
+          </div>
+
+          <!-- View Toggle Mode -->
+          <div class="view-toggle">
+            <button id="view-table-btn" class="active" title="표 형태"><i class="fa-solid fa-table-list"></i> Table</button>
+            <button id="view-cards-btn" title="카드 형태"><i class="fa-solid fa-border-all"></i> Cards</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Count Info -->
+      <div class="results-header">
+        <div class="results-count">
+          조회 결과: <strong id="visible-count">0</strong> 명의 생존자
+        </div>
+        <div class="active-filters-tags" id="active-filters-tags">
+          <!-- Dynamic filter badges -->
+        </div>
+      </div>
+
+      <!-- Table View Container -->
+      <div class="data-view-container" id="table-view-container">
+        <div class="table-responsive">
+          <table class="character-table">
+            <thead>
+              <tr>
+                <th class="col-earth">지구</th>
+                <th class="col-name">캐릭터 이름</th>
+                <th class="col-status">상태</th>
+                <th class="col-kills">킬 수 (Zombie Kills)</th>
+                <th class="col-survival">생존 기간</th>
+                <th class="col-occupation">직업</th>
+                <th class="col-traits">캐릭터 특성 (Traits)</th>
+                <th class="col-notes">사망 원인 / 메모</th>
+              </tr>
+            </thead>
+            <tbody id="character-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Cards View Container (Hidden by default) -->
+      <div class="cards-grid-container hidden" id="cards-view-container">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- No Data Message -->
+      <div class="no-data-card hidden" id="no-data-msg">
+        <i class="fa-solid fa-ghost"></i>
+        <h3>조건에 맞는 캐릭터가 없습니다.</h3>
+        <p>검색어나 필터 조건을 변경해보세요.</p>
+      </div>
+    </main>
+
+    <!-- Footer Guide -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p><strong><i class="fa-solid fa-circle-info"></i> 데이터 업데이트 가이드</strong></p>
+          <p>이 대시보드는 정적 배포 웹페이지입니다. 새로운 지구 또는 캐릭터 데이터를 추가/수정하려면 <code>data.js</code> 파일을 편집 후 <code>git commit</code> & <code>push</code> 하세요.</p>
+        </div>
+        <div class="copyright">
+          Project Zomboid Dashboard &copy; GitHub Pages
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Load Data and Main Script -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
