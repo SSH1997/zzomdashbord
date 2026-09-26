@@ -1,6 +1,6 @@
 /**
  * Project Zomboid Dashboard - Core Application Logic
- * Player Account ID Primary Display & Cache-Busting UI
+ * Supports Account Aggregation, Total Kills Ranking, Death Count Leaderboards, and Character Log Sequence.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,14 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSearchQuery = '';
   let currentStatusFilter = 'all';
   let currentSortOption = 'kills-desc';
-  let currentViewMode = 'table'; // 'table' or 'cards'
+  let currentViewMode = 'table';
 
   // DOM Elements
-  const statTotalEarths = document.getElementById('stat-total-earths');
-  const statTotalChars = document.getElementById('stat-total-chars');
+  const statTotalAccounts = document.getElementById('stat-total-accounts');
   const statTotalKills = document.getElementById('stat-total-kills');
   const statTopKiller = document.getElementById('stat-top-killer');
   const statTopKillerKills = document.getElementById('stat-top-killer-kills');
+  const statTopDead = document.getElementById('stat-top-dead');
+  const statTopDeadCount = document.getElementById('stat-top-dead-count');
 
   const earthTabsContainer = document.getElementById('earth-tabs');
   const searchInput = document.getElementById('search-input');
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const noDataMsg = document.getElementById('no-data-msg');
 
   // Verify dataset availability
-  const dataset = (typeof zomboidData !== 'undefined' && Array.isArray(zomboidData)) ? zomboidData : [];
+  const rawDataset = (typeof zomboidData !== 'undefined' && Array.isArray(zomboidData)) ? zomboidData : [];
 
   // Initialize App
   function init() {
@@ -44,57 +45,75 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilterAndRender();
   }
 
-  // Calculate and display top header statistics
+  // Header Summary Cards (Total Accounts, Kills, Top Kills Rank, Top Deaths Rank)
   function renderOverviewStats() {
-    if (dataset.length === 0) {
-      statTotalEarths.textContent = '0';
-      statTotalChars.textContent = '0';
-      statTotalKills.textContent = '0';
-      statTopKiller.textContent = '-';
-      statTopKillerKills.textContent = '0 Kills';
+    if (rawDataset.length === 0) {
+      if (statTotalAccounts) statTotalAccounts.textContent = '0';
+      if (statTotalKills) statTotalKills.textContent = '0';
+      if (statTopKiller) statTopKiller.textContent = '-';
+      if (statTopDead) statTopDead.textContent = '-';
       return;
     }
 
-    // Unique Earths
-    const uniqueEarths = new Set(dataset.map(item => item.earth));
-    statTotalEarths.textContent = uniqueEarths.size;
+    if (statTotalAccounts) statTotalAccounts.textContent = rawDataset.length;
 
-    // Total Players
-    statTotalChars.textContent = dataset.length;
+    // Total Kills across all accounts
+    const totalKills = rawDataset.reduce((sum, acc) => sum + (Number(acc.totalKills) || 0), 0);
+    if (statTotalKills) statTotalKills.textContent = totalKills.toLocaleString();
 
-    // Total Kills
-    const totalKills = dataset.reduce((sum, char) => sum + (Number(char.kills) || 0), 0);
-    statTotalKills.textContent = totalKills.toLocaleString();
+    // Top Kills Player
+    const topKiller = rawDataset.reduce((prev, current) => {
+      return ((Number(current.totalKills) || 0) > (Number(prev.totalKills) || 0)) ? current : prev;
+    }, rawDataset[0]);
 
-    // Top Killer (Display Player Account ID!)
-    const topKiller = dataset.reduce((prev, current) => {
-      return ((Number(current.kills) || 0) > (Number(prev.kills) || 0)) ? current : prev;
-    }, dataset[0]);
+    if (topKiller && statTopKiller) {
+      statTopKiller.textContent = topKiller.account;
+      if (statTopKillerKills) {
+        statTopKillerKills.textContent = `${(Number(topKiller.totalKills) || 0).toLocaleString()} Kills (${topKiller.characterCount}개 캐릭터)`;
+      }
+    }
 
-    if (topKiller) {
-      const displayAccount = topKiller.account || topKiller.name || '-';
-      statTopKiller.textContent = displayAccount;
-      statTopKillerKills.textContent = `${(Number(topKiller.kills) || 0).toLocaleString()} Kills (캐릭터: ${topKiller.name} / ${topKiller.earth})`;
+    // Top Deaths Player (데스왕 💀)
+    const topDead = rawDataset.reduce((prev, current) => {
+      return ((Number(current.deathCount) || 0) > (Number(prev.deathCount) || 0)) ? current : prev;
+    }, rawDataset[0]);
+
+    if (topDead && statTopDead) {
+      statTopDead.textContent = topDead.account;
+      if (statTopDeadCount) {
+        statTopDeadCount.textContent = `${topDead.deathCount || 0}회 사망 (${topDead.characterCount}개 캐릭터)`;
+      }
     }
   }
 
-  // Dynamically generate Earth Tabs
+  // Build Earth Filter Tabs
   function buildEarthTabs() {
-    const uniqueEarths = Array.from(new Set(dataset.map(item => item.earth))).sort();
+    // Extract unique earths across all characters
+    const earthsSet = new Set();
+    rawDataset.forEach(acc => {
+      if (Array.isArray(acc.characters)) {
+        acc.characters.forEach(c => {
+          if (c.earth) earthsSet.add(c.earth);
+        });
+      }
+    });
 
+    const uniqueEarths = Array.from(earthsSet).sort();
     earthTabsContainer.innerHTML = '';
 
-    // "전체 (All)" Tab
     const allTab = document.createElement('button');
     allTab.className = `tab-btn ${currentEarthFilter === 'all' ? 'active' : ''}`;
-    allTab.textContent = `전체 (${dataset.length})`;
+    allTab.textContent = `전체 계정 (${rawDataset.length})`;
     allTab.dataset.earth = 'all';
     allTab.addEventListener('click', () => setEarthFilter('all'));
     earthTabsContainer.appendChild(allTab);
 
-    // Individual Earth Tabs
     uniqueEarths.forEach(earthName => {
-      const count = dataset.filter(item => item.earth === earthName).length;
+      // Count accounts that have played in this earth
+      const count = rawDataset.filter(acc => 
+        Array.isArray(acc.characters) && acc.characters.some(c => c.earth === earthName)
+      ).length;
+
       const tab = document.createElement('button');
       tab.className = `tab-btn ${currentEarthFilter === earthName ? 'active' : ''}`;
       tab.textContent = `${earthName} (${count})`;
@@ -104,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Set selected earth filter
   function setEarthFilter(earthName) {
     currentEarthFilter = earthName;
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -113,9 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilterAndRender();
   }
 
-  // Event Listeners Registration
   function setupEventListeners() {
-    // Search input
     searchInput.addEventListener('input', (e) => {
       currentSearchQuery = e.target.value.trim().toLowerCase();
       clearSearchBtn.style.display = currentSearchQuery ? 'block' : 'none';
@@ -129,19 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilterAndRender();
     });
 
-    // Status Filter dropdown
     statusFilterSelect.addEventListener('change', (e) => {
       currentStatusFilter = e.target.value;
       applyFilterAndRender();
     });
 
-    // Sort dropdown
     sortSelect.addEventListener('change', (e) => {
       currentSortOption = e.target.value;
       applyFilterAndRender();
     });
 
-    // View Mode buttons
     viewTableBtn.addEventListener('click', () => {
       currentViewMode = 'table';
       viewTableBtn.classList.add('active');
@@ -159,61 +172,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Main Filtering, Sorting and Rendering logic
+  // Filtering, Sorting and View Rendering
   function applyFilterAndRender() {
-    let filtered = dataset.slice();
+    let filtered = rawDataset.slice();
 
     // 1. Earth Filter
     if (currentEarthFilter !== 'all') {
-      filtered = filtered.filter(item => item.earth === currentEarthFilter);
+      filtered = filtered.filter(acc => 
+        Array.isArray(acc.characters) && acc.characters.some(c => c.earth === currentEarthFilter)
+      );
     }
 
-    // 2. Status Filter
-    if (currentStatusFilter !== 'all') {
-      filtered = filtered.filter(item => item.status === currentStatusFilter);
+    // 2. Status Filter ("사망기록", "전원생존")
+    if (currentStatusFilter === '사망기록') {
+      filtered = filtered.filter(acc => (acc.deathCount || 0) > 0);
+    } else if (currentStatusFilter === '전원생존') {
+      filtered = filtered.filter(acc => (acc.deathCount || 0) === 0);
     }
 
-    // 3. Search Query Filter (account, name, occupation, traits, notes, earth)
+    // 3. Search Query Filter (account, steamId, character names, occupations, traits, location)
     if (currentSearchQuery) {
-      filtered = filtered.filter(item => {
-        const accountMatch = item.account && item.account.toLowerCase().includes(currentSearchQuery);
-        const nameMatch = item.name && item.name.toLowerCase().includes(currentSearchQuery);
-        const occupationMatch = item.occupation && item.occupation.toLowerCase().includes(currentSearchQuery);
-        const notesMatch = item.deathCause && item.deathCause.toLowerCase().includes(currentSearchQuery);
-        const earthMatch = item.earth && item.earth.toLowerCase().includes(currentSearchQuery);
+      filtered = filtered.filter(acc => {
+        const accountMatch = acc.account && acc.account.toLowerCase().includes(currentSearchQuery);
+        const steamIdMatch = acc.steamId && acc.steamId.toLowerCase().includes(currentSearchQuery);
 
-        const traitsMatch = Array.isArray(item.traits) && item.traits.some(t => {
-          const traitName = typeof t === 'string' ? t : t.name;
-          return traitName.toLowerCase().includes(currentSearchQuery);
+        const charMatch = Array.isArray(acc.characters) && acc.characters.some(c => {
+          const nameMatch = c.name && c.name.toLowerCase().includes(currentSearchQuery);
+          const occMatch = c.occupation && c.occupation.toLowerCase().includes(currentSearchQuery);
+          const locMatch = c.location && c.location.toLowerCase().includes(currentSearchQuery);
+          const earthMatch = c.earth && c.earth.toLowerCase().includes(currentSearchQuery);
+
+          const traitMatch = Array.isArray(c.traits) && c.traits.some(t => {
+            const tName = typeof t === 'string' ? t : t.name;
+            return tName.toLowerCase().includes(currentSearchQuery);
+          });
+
+          return nameMatch || occMatch || locMatch || earthMatch || traitMatch;
         });
 
-        return accountMatch || nameMatch || occupationMatch || notesMatch || earthMatch || traitsMatch;
+        return accountMatch || steamIdMatch || charMatch;
       });
     }
 
     // 4. Sorting
     filtered.sort((a, b) => {
-      const killsA = Number(a.kills) || 0;
-      const killsB = Number(b.kills) || 0;
+      const killsA = Number(a.totalKills) || 0;
+      const killsB = Number(b.totalKills) || 0;
+      const deathsA = Number(a.deathCount) || 0;
+      const deathsB = Number(b.deathCount) || 0;
 
       if (currentSortOption === 'kills-desc') {
         return killsB - killsA;
-      } else if (currentSortOption === 'kills-asc') {
-        return killsA - killsB;
+      } else if (currentSortOption === 'deaths-desc') {
+        return deathsB - deathsA || killsB - killsA;
       } else if (currentSortOption === 'account-asc') {
-        return (a.account || a.name || '').localeCompare(b.account || b.name || '', 'ko');
-      } else if (currentSortOption === 'name-asc') {
-        return (a.name || '').localeCompare(b.name || '', 'ko');
-      } else if (currentSortOption === 'earth-asc') {
-        return (a.earth || '').localeCompare(b.earth || '', 'ko') || (killsB - killsA);
+        return a.account.localeCompare(b.account, 'ko');
+      } else if (currentSortOption === 'survival-desc') {
+        return (b.totalSurvivalHours || 0) - (a.totalSurvivalHours || 0);
+      } else if (currentSortOption === 'chars-desc') {
+        return (b.characterCount || 0) - (a.characterCount || 0);
       }
       return 0;
     });
 
-    // Update Result Count
     visibleCountEl.textContent = filtered.length;
 
-    // Handle empty state
     if (filtered.length === 0) {
       noDataMsg.classList.remove('hidden');
       tableViewContainer.classList.add('hidden');
@@ -227,7 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Render Views
     renderTableView(filtered);
     renderCardsView(filtered);
   }
@@ -236,39 +258,43 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderTableView(data) {
     characterTableBody.innerHTML = '';
 
-    data.forEach(char => {
+    data.forEach((acc, index) => {
       const tr = document.createElement('tr');
 
-      // Status Badge HTML
-      const statusClass = char.status === '생존' ? 'alive' : (char.status === '실종' ? 'missing' : 'dead');
-      const statusIcon = char.status === '생존' ? '<i class="fa-solid fa-heart-pulse"></i>' : (char.status === '실종' ? '<i class="fa-solid fa-circle-question"></i>' : '<i class="fa-solid fa-skull"></i>');
-      const statusHtml = `<span class="status-badge ${statusClass}">${statusIcon} ${char.status || '사망'}</span>`;
+      const rank = index + 1;
+      const rankBadge = rank === 1 ? '🥇 1' : (rank === 2 ? '🥈 2' : (rank === 3 ? '🥉 3' : `${rank}`));
 
-      // Kills badge html
-      const isHighKiller = (Number(char.kills) || 0) >= 1000;
+      // Death Count Badge HTML
+      const hasDeaths = (acc.deathCount || 0) > 0;
+      const deathBadgeHtml = hasDeaths
+        ? `<span class="death-count-badge has-deaths"><i class="fa-solid fa-skull"></i> ${acc.deathCount}회 사망</span>`
+        : `<span class="death-count-badge no-deaths"><i class="fa-solid fa-heart"></i> 0회 사망 (생존)</span>`;
+
+      // Total Kills badge
+      const isHighKiller = (Number(acc.totalKills) || 0) >= 1000;
       const killsHtml = `
         <span class="kill-count-badge ${isHighKiller ? 'high-killer' : ''}">
-          <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()} 킬
+          <i class="fa-solid fa-crosshairs"></i> ${(Number(acc.totalKills) || 0).toLocaleString()} 킬
         </span>
       `;
 
-      // Traits HTML
-      const traitsHtml = buildTraitsBadgesHtml(char.traits);
-
-      // Account ID (Primary) and Character Name
-      const playerAccount = char.account || char.name || '-';
-      const characterName = char.name || '-';
+      // Character History Sequence List HTML
+      const historyHtml = buildCharacterHistoryHtml(acc.characters);
 
       tr.innerHTML = `
-        <td class="col-earth"><span class="earth-badge">${escapeHtml(char.earth)}</span></td>
-        <td class="col-account"><strong style="color: var(--accent-gold); font-size: 1rem;"><i class="fa-solid fa-user" style="margin-right: 5px;"></i>${escapeHtml(playerAccount)}</strong></td>
-        <td class="col-name"><span style="color: var(--text-main); font-weight: 500;">${escapeHtml(characterName)}</span></td>
-        <td class="col-status">${statusHtml}</td>
+        <td class="col-rank-cell"><strong>${rankBadge}</strong></td>
+        <td class="col-account">
+          <div class="account-badge-title">
+            <i class="fa-solid fa-user-circle"></i> ${escapeHtml(acc.account)}
+          </div>
+          <div>
+            <span class="char-count-tag"><i class="fa-solid fa-users"></i> ${acc.characterCount || 1}개 캐릭터</span>
+          </div>
+        </td>
         <td class="col-kills">${killsHtml}</td>
-        <td class="col-survival survival-cell"><i class="fa-regular fa-clock" style="color: var(--text-dim); margin-right: 4px;"></i>${escapeHtml(char.survivalTime || '-')}</td>
-        <td class="col-occupation"><span class="occupation-tag">${escapeHtml(char.occupation || '-')}</span></td>
-        <td class="col-traits"><div class="traits-wrapper">${traitsHtml}</div></td>
-        <td class="col-notes">${escapeHtml(char.deathCause || '-')}</td>
+        <td class="col-deaths">${deathBadgeHtml}</td>
+        <td class="col-survival"><i class="fa-regular fa-clock" style="color: var(--text-dim); margin-right: 4px;"></i>${escapeHtml(acc.totalSurvivalTime || '0시간')}</td>
+        <td class="col-history">${historyHtml}</td>
       `;
 
       characterTableBody.appendChild(tr);
@@ -279,53 +305,48 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCardsView(data) {
     cardsViewContainer.innerHTML = '';
 
-    data.forEach(char => {
+    data.forEach((acc, index) => {
       const card = document.createElement('div');
       card.className = 'char-card';
 
-      const statusClass = char.status === '생존' ? 'alive' : (char.status === '실종' ? 'missing' : 'dead');
-      const statusIcon = char.status === '생존' ? '<i class="fa-solid fa-heart-pulse"></i>' : (char.status === '실종' ? '<i class="fa-solid fa-circle-question"></i>' : '<i class="fa-solid fa-skull"></i>');
-      const statusHtml = `<span class="status-badge ${statusClass}">${statusIcon} ${char.status || '사망'}</span>`;
-      const traitsHtml = buildTraitsBadgesHtml(char.traits);
+      const rank = index + 1;
+      const hasDeaths = (acc.deathCount || 0) > 0;
+      const deathBadgeHtml = hasDeaths
+        ? `<span class="death-count-badge has-deaths"><i class="fa-solid fa-skull"></i> ${acc.deathCount}회 사망</span>`
+        : `<span class="death-count-badge no-deaths"><i class="fa-solid fa-heart"></i> 0회 사망 (생존)</span>`;
 
-      const isHighKiller = (Number(char.kills) || 0) >= 1000;
-      const playerAccount = char.account || char.name || '-';
+      const isHighKiller = (Number(acc.totalKills) || 0) >= 1000;
+      const historyHtml = buildCharacterHistoryHtml(acc.characters);
 
       card.innerHTML = `
         <div class="char-card-header">
           <div class="char-card-title">
-            <h3 style="font-size: 1.25rem; color: var(--accent-gold);"><i class="fa-solid fa-user" style="margin-right: 6px;"></i>${escapeHtml(playerAccount)}</h3>
-            <span class="occ" style="font-size: 0.88rem; color: var(--text-main);">캐릭터: <strong>${escapeHtml(char.name)}</strong> (${escapeHtml(char.occupation || '직업 미지정')})</span>
+            <div class="card-rank-tag">#${rank} 위</div>
+            <h3 style="font-size: 1.3rem; color: var(--accent-gold);"><i class="fa-solid fa-user-circle" style="margin-right: 6px;"></i>${escapeHtml(acc.account)}</h3>
           </div>
           <div>
-            <span class="earth-badge">${escapeHtml(char.earth)}</span>
+            ${deathBadgeHtml}
           </div>
         </div>
 
         <div class="char-card-body">
           <div class="card-stat-row">
-            <span class="card-stat-label">상태</span>
-            <span>${statusHtml}</span>
-          </div>
-          <div class="card-stat-row">
-            <span class="card-stat-label">처치한 좀비</span>
+            <span class="card-stat-label">통합 좀비 킬 수</span>
             <span class="kill-count-badge ${isHighKiller ? 'high-killer' : ''}">
-              <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()} 킬
+              <i class="fa-solid fa-crosshairs"></i> ${(Number(acc.totalKills) || 0).toLocaleString()} 킬
             </span>
           </div>
           <div class="card-stat-row">
-            <span class="card-stat-label">생존 기간</span>
-            <span class="card-stat-val survival-cell">${escapeHtml(char.survivalTime || '-')}</span>
+            <span class="card-stat-label">통합 생존 시간</span>
+            <span class="card-stat-val">${escapeHtml(acc.totalSurvivalTime || '0시간')}</span>
           </div>
 
-          <div style="margin-top: 0.25rem;">
-            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.35rem;">특성 (Traits):</div>
-            <div class="traits-wrapper">${traitsHtml}</div>
+          <div style="margin-top: 0.5rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-list-ol"></i> 캐릭터 생성 & 사망 이력 (${acc.characterCount}개):</span>
+            </div>
+            ${historyHtml}
           </div>
-        </div>
-
-        <div class="char-card-footer">
-          <i class="fa-solid fa-note-sticky" style="margin-right: 4px;"></i> ${escapeHtml(char.deathCause || '메모 없음')}
         </div>
       `;
 
@@ -333,10 +354,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Build Character Log Sequence HTML per Account (순서대로 차례별 출력)
+  function buildCharacterHistoryHtml(characters) {
+    if (!characters || !Array.isArray(characters) || characters.length === 0) {
+      return '<div style="color: var(--text-dim); font-size: 0.8rem;">캐릭터 기록 없음</div>';
+    }
+
+    const itemsHtml = characters.map(c => {
+      const isDead = c.status === '사망';
+      const statusIcon = isDead ? '💀 사망' : '🟢 생존';
+      const statusClass = isDead ? 'dead' : 'alive';
+      const traitsHtml = buildTraitsBadgesHtml(c.traits);
+
+      return `
+        <div class="char-history-item ${isDead ? 'is-dead' : ''}">
+          <div class="char-history-header">
+            <div>
+              <span class="char-order-tag">#${c.order} 차례</span>
+              <strong class="char-history-name">${escapeHtml(c.name)}</strong>
+              <span class="earth-badge" style="margin-left: 4px;">${escapeHtml(c.earth)}</span>
+            </div>
+            <div>
+              <span class="status-badge ${statusClass}">${statusIcon}</span>
+            </div>
+          </div>
+
+          <div class="char-history-meta">
+            <span><i class="fa-solid fa-crosshairs" style="color: var(--accent-red);"></i> ${c.kills || 0} 킬</span>
+            <span><i class="fa-regular fa-clock"></i> ${escapeHtml(c.survivalTime || '0시간')}</span>
+            <span><i class="fa-solid fa-briefcase"></i> ${escapeHtml(c.occupation || '무직')}</span>
+          </div>
+
+          ${c.location ? `<div style="font-size: 0.75rem; color: var(--accent-gold); font-family: var(--font-mono);"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(c.location)}</div>` : ''}
+
+          <div class="traits-wrapper" style="margin-top: 0.2rem;">${traitsHtml}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `<div class="char-history-list">${itemsHtml}</div>`;
+  }
+
   // Trait Badges HTML builder
   function buildTraitsBadgesHtml(traits) {
     if (!traits || !Array.isArray(traits) || traits.length === 0) {
-      return '<span style="color: var(--text-dim); font-size: 0.8rem;">특성 없음</span>';
+      return '<span style="color: var(--text-dim); font-size: 0.72rem;">특성 없음</span>';
     }
 
     return traits.map(t => {
@@ -345,13 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (typeof t === 'string') {
         name = t;
-        if (t.startsWith('-')) {
-          type = 'neg';
-          name = t.substring(1).trim();
-        } else if (t.startsWith('+')) {
-          type = 'pos';
-          name = t.substring(1).trim();
-        }
       } else if (typeof t === 'object' && t !== null) {
         name = t.name || '';
         type = t.type || 'pos';
@@ -361,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
   }
 
-  // Utility to prevent XSS
+  // XSS protection
   function escapeHtml(str) {
     if (typeof str !== 'string') return str;
     return str
@@ -372,6 +427,5 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#039;');
   }
 
-  // Run initialization
   init();
 });
