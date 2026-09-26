@@ -1,7 +1,7 @@
 /**
  * ==========================================
  * 프로젝트 좀보이드 1지구 플레이어 계정/캐릭터 데이터베이스
- * (서버 로그 및 DB 검증 완료)
+ * (서버 로그 사망 사건 및 DB 정밀 대조 완료)
  * ==========================================
  */
 
@@ -56,7 +56,7 @@ const zomboidData = [
             "type": "neg"
           }
         ],
-        "location": "X: 13713.0, Y: 1721.0, Z: 0.0 (사망 지점)",
+        "location": "X: 13713.0, Y: 1721.0, Z: 0.0 (사망 지점 - 21:08:57)",
         "lastSaved": "2026-09-26 21:08:57"
       },
       {
@@ -81,41 +81,15 @@ const zomboidData = [
     "steamId": "76561199546981794",
     "totalKills": 16,
     "deathCount": 2,
-    "totalSurvivalHours": 19.57,
-    "totalSurvivalTime": "19.6시간 (0.8일)",
+    "totalSurvivalHours": 19.69,
+    "totalSurvivalTime": "19.7시간 (0.8일)",
     "characterCount": 3,
     "characters": [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "JINDOL 1차 캐릭터",
-        "status": "사망",
-        "kills": 0,
-        "survivalHours": 0.0,
-        "survivalTime": "0.00시간 (0.0일)",
-        "occupation": "무직 (Unemployed)",
-        "traits": [],
-        "location": "X: 13319.0, Y: 1446.0, Z: 0.0 (사망 지점)",
-        "lastSaved": "2026-09-26 20:58:27"
-      },
-      {
-        "order": 2,
-        "earth": "1지구",
-        "name": "JINDOL 2차 캐릭터",
-        "status": "사망",
-        "kills": 0,
-        "survivalHours": 0.0,
-        "survivalTime": "0.00시간 (0.0일)",
-        "occupation": "무직 (Unemployed)",
-        "traits": [],
-        "location": "X: 14307.0, Y: 2820.0, Z: 0.0 (사망 지점)",
-        "lastSaved": "2026-09-26 21:03:58"
-      },
-      {
-        "order": 3,
-        "earth": "1지구",
         "name": "에이브 내시",
-        "status": "생존",
+        "status": "사망",
         "kills": 16,
         "survivalHours": 19.57,
         "survivalTime": "19.57시간 (0.8일)",
@@ -130,7 +104,33 @@ const zomboidData = [
             "type": "mod"
           }
         ],
-        "location": "X: 13314.6, Y: 1447.7, Z: 0.0",
+        "location": "X: 13319.0, Y: 1446.0, Z: 0.0 (사망 지점 - 20:58:27)",
+        "lastSaved": "2026-09-26 20:58:27"
+      },
+      {
+        "order": 2,
+        "earth": "1지구",
+        "name": "JINDOL 2차 캐릭터",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.07,
+        "survivalTime": "0.07시간 (4분)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "X: 14307.0, Y: 2820.0, Z: 0.0 (사망 지점 - 21:03:58)",
+        "lastSaved": "2026-09-26 21:03:58"
+      },
+      {
+        "order": 3,
+        "earth": "1지구",
+        "name": "JINDOL 3차 캐릭터",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 0.05,
+        "survivalTime": "0.05시간 (3분)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "X: 13396.5, Y: 1505.7, Z: 0.0",
         "lastSaved": "2026-09-26 23:15:09"
       }
     ]
@@ -250,7 +250,7 @@ const zomboidData = [
         "survivalTime": "0.00시간 (0.0일)",
         "occupation": "무직 (Unemployed)",
         "traits": [],
-        "location": "X: 14166.0, Y: 2853.0, Z: 0.0 (사망 지점)",
+        "location": "X: 14166.0, Y: 2853.0, Z: 0.0 (사망 지점 - 19:38:25)",
         "lastSaved": "2026-09-26 19:38:25"
       },
       {
@@ -307,7 +307,7 @@ const zomboidData = [
             "type": "neg"
           }
         ],
-        "location": "X: 13192.0, Y: 1411.0, Z: 0.0 (사망 지점)",
+        "location": "X: 13192.0, Y: 1411.0, Z: 0.0 (사망 지점 - 19:50:24)",
         "lastSaved": "2026-09-26 19:50:24"
       },
       {
@@ -372,7 +372,7 @@ const zomboidData = [
             "type": "pos"
           }
         ],
-        "location": "X: 13529.0, Y: 1590.0, Z: 1.0 (사망 지점)",
+        "location": "X: 13529.0, Y: 1590.0, Z: 1.0 (사망 지점 - 20:02:01)",
         "lastSaved": "2026-09-26 20:02:01"
       },
       {
@@ -441,7 +441,7 @@ const zomboidData = [
             "type": "pos"
           }
         ],
-        "location": "X: 14169.0, Y: 2720.0, Z: 0.0 (사망 지점)",
+        "location": "X: 14169.0, Y: 2720.0, Z: 0.0 (사망 지점 - 20:41:45)",
         "lastSaved": "2026-09-26 20:41:45"
       },
       {
