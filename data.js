@@ -1,7 +1,7 @@
 /**
  * ==========================================
  * 프로젝트 좀보이드 1지구 플레이어 계정/캐릭터 데이터베이스
- * (최신 서버 자동 추출: 2026-09-26T23:16:59.191766)
+ * (서버 로그 및 DB 검증 완료)
  * ==========================================
  */
 
@@ -20,21 +20,8 @@ const zomboidData = [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "daun 1차 캐릭터 (사망)",
-        "status": "사망",
-        "kills": 0,
-        "survivalHours": 0.0,
-        "survivalTime": "0.00시간 (0.0일)",
-        "occupation": "무직 (Unemployed)",
-        "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
-      },
-      {
-        "order": 2,
-        "earth": "1지구",
         "name": "마르코 맥앨리스터",
-        "status": "생존",
+        "status": "사망",
         "kills": 33,
         "survivalHours": 20.67,
         "survivalTime": "20.67시간 (0.9일)",
@@ -69,8 +56,21 @@ const zomboidData = [
             "type": "neg"
           }
         ],
-        "location": "X: 13688.6, Y: 1791.8, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "location": "X: 13713.0, Y: 1721.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 21:08:57"
+      },
+      {
+        "order": 2,
+        "earth": "1지구",
+        "name": "daun 2차 캐릭터",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "X: 13714.2, Y: 1721.0, Z: 0.0",
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -88,28 +88,28 @@ const zomboidData = [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "JINDOL 1차 캐릭터 (사망)",
+        "name": "JINDOL 1차 캐릭터",
         "status": "사망",
         "kills": 0,
         "survivalHours": 0.0,
         "survivalTime": "0.00시간 (0.0일)",
         "occupation": "무직 (Unemployed)",
         "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
+        "location": "X: 13319.0, Y: 1446.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 20:58:27"
       },
       {
         "order": 2,
         "earth": "1지구",
-        "name": "JINDOL 2차 캐릭터 (사망)",
+        "name": "JINDOL 2차 캐릭터",
         "status": "사망",
         "kills": 0,
         "survivalHours": 0.0,
         "survivalTime": "0.00시간 (0.0일)",
         "occupation": "무직 (Unemployed)",
         "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
+        "location": "X: 14307.0, Y: 2820.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 21:03:58"
       },
       {
         "order": 3,
@@ -131,7 +131,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13314.6, Y: 1447.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -178,7 +178,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13966.4, Y: 3237.0, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -225,7 +225,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13113.8, Y: 1802.3, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -243,15 +243,15 @@ const zomboidData = [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "ANTE 1차 캐릭터 (사망)",
+        "name": "ANTE 1차 캐릭터",
         "status": "사망",
         "kills": 0,
         "survivalHours": 0.0,
         "survivalTime": "0.00시간 (0.0일)",
         "occupation": "무직 (Unemployed)",
         "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
+        "location": "X: 14166.0, Y: 2853.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 19:38:25"
       },
       {
         "order": 2,
@@ -277,7 +277,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13748.3, Y: 3002.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -290,26 +290,13 @@ const zomboidData = [
     "deathCount": 1,
     "totalSurvivalHours": 19.54,
     "totalSurvivalTime": "19.5시간 (0.8일)",
-    "characterCount": 3,
+    "characterCount": 2,
     "characters": [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "TIGER 1차 캐릭터 (사망)",
-        "status": "사망",
-        "kills": 0,
-        "survivalHours": 0.0,
-        "survivalTime": "0.00시간 (0.0일)",
-        "occupation": "무직 (Unemployed)",
-        "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
-      },
-      {
-        "order": 2,
-        "earth": "1지구",
         "name": "랑이 대단한",
-        "status": "생존",
+        "status": "사망",
         "kills": 4,
         "survivalHours": 3.65,
         "survivalTime": "3.65시간 (0.2일)",
@@ -320,11 +307,11 @@ const zomboidData = [
             "type": "neg"
           }
         ],
-        "location": "X: 13223.1, Y: 1461.2, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "location": "X: 13192.0, Y: 1411.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 19:50:24"
       },
       {
-        "order": 3,
+        "order": 2,
         "earth": "1지구",
         "name": "랑이2호 대단한",
         "status": "생존",
@@ -339,7 +326,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 12586.2, Y: 1990.5, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -352,20 +339,41 @@ const zomboidData = [
     "deathCount": 1,
     "totalSurvivalHours": 16.69,
     "totalSurvivalTime": "16.7시간 (0.7일)",
-    "characterCount": 3,
+    "characterCount": 2,
     "characters": [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "gyear 1차 캐릭터 (사망)",
+        "name": "벌 트렘블레이",
         "status": "사망",
         "kills": 0,
-        "survivalHours": 0.0,
-        "survivalTime": "0.00시간 (0.0일)",
+        "survivalHours": 3.37,
+        "survivalTime": "3.37시간 (0.1일)",
         "occupation": "무직 (Unemployed)",
-        "traits": [],
-        "location": "1지구 사망",
-        "lastSaved": "1지구"
+        "traits": [
+          {
+            "name": "박탈감 [ETW]",
+            "type": "neg"
+          },
+          {
+            "name": "골다공증 [SW]",
+            "type": "neg"
+          },
+          {
+            "name": "행복감 [ETW]",
+            "type": "mod"
+          },
+          {
+            "name": "짐꾼 [ETW] (Pack Mule)",
+            "type": "mod"
+          },
+          {
+            "name": "현자의 가르침 (Fast Learner)",
+            "type": "pos"
+          }
+        ],
+        "location": "X: 13529.0, Y: 1590.0, Z: 1.0 (사망 지점)",
+        "lastSaved": "2026-09-26 20:02:01"
       },
       {
         "order": 2,
@@ -399,41 +407,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13413.6, Y: 1674.9, Z: 1.0",
-        "lastSaved": "2026-09-26 23:16:59"
-      },
-      {
-        "order": 3,
-        "earth": "1지구",
-        "name": "벌 트렘블레이",
-        "status": "생존",
-        "kills": 0,
-        "survivalHours": 3.37,
-        "survivalTime": "3.37시간 (0.1일)",
-        "occupation": "무직 (Unemployed)",
-        "traits": [
-          {
-            "name": "박탈감 [ETW]",
-            "type": "neg"
-          },
-          {
-            "name": "골다공증 [SW]",
-            "type": "neg"
-          },
-          {
-            "name": "행복감 [ETW]",
-            "type": "mod"
-          },
-          {
-            "name": "짐꾼 [ETW] (Pack Mule)",
-            "type": "mod"
-          },
-          {
-            "name": "현자의 가르침 (Fast Learner)",
-            "type": "pos"
-          }
-        ],
-        "location": "X: 13496.6, Y: 1628.7, Z: 1.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   },
@@ -451,7 +425,7 @@ const zomboidData = [
       {
         "order": 1,
         "earth": "1지구",
-        "name": "빌 제이머스",
+        "name": "빌 제이머스 (1차)",
         "status": "사망",
         "kills": 0,
         "survivalHours": 0.0,
@@ -467,13 +441,13 @@ const zomboidData = [
             "type": "pos"
           }
         ],
-        "location": "X: 14169.5, Y: 2720.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "location": "X: 14169.0, Y: 2720.0, Z: 0.0 (사망 지점)",
+        "lastSaved": "2026-09-26 20:41:45"
       },
       {
         "order": 2,
         "earth": "1지구",
-        "name": "빌 제이머스",
+        "name": "빌 제이머스 (2차)",
         "status": "생존",
         "kills": 0,
         "survivalHours": 3.23,
@@ -490,7 +464,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 14112.0, Y: 2880.5, Z: 0.0",
-        "lastSaved": "2026-09-26 23:16:59"
+        "lastSaved": "2026-09-26 23:15:09"
       }
     ]
   }
