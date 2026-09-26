@@ -1,6 +1,6 @@
 /**
  * Project Zomboid Dashboard - Core Application Logic
- * Configured for Primary Player Account ID Display & Single-Line Column Layout
+ * Player Account ID Primary Display & Cache-Busting UI
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,15 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalKills = dataset.reduce((sum, char) => sum + (Number(char.kills) || 0), 0);
     statTotalKills.textContent = totalKills.toLocaleString();
 
-    // Top Killer
+    // Top Killer (Display Player Account ID!)
     const topKiller = dataset.reduce((prev, current) => {
       return ((Number(current.kills) || 0) > (Number(prev.kills) || 0)) ? current : prev;
     }, dataset[0]);
 
     if (topKiller) {
-      const displayId = topKiller.account || topKiller.name;
-      statTopKiller.textContent = displayId;
-      statTopKillerKills.textContent = `${(Number(topKiller.kills) || 0).toLocaleString()} Kills (${topKiller.name} / ${topKiller.earth})`;
+      const displayAccount = topKiller.account || topKiller.name || '-';
+      statTopKiller.textContent = displayAccount;
+      statTopKillerKills.textContent = `${(Number(topKiller.kills) || 0).toLocaleString()} Kills (캐릭터: ${topKiller.name} / ${topKiller.earth})`;
     }
   }
 
@@ -201,11 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (currentSortOption === 'kills-asc') {
         return killsA - killsB;
       } else if (currentSortOption === 'account-asc') {
-        return (a.account || a.name).localeCompare(b.account || b.name, 'ko');
+        return (a.account || a.name || '').localeCompare(b.account || b.name || '', 'ko');
       } else if (currentSortOption === 'name-asc') {
-        return a.name.localeCompare(b.name, 'ko');
+        return (a.name || '').localeCompare(b.name || '', 'ko');
       } else if (currentSortOption === 'earth-asc') {
-        return a.earth.localeCompare(b.earth, 'ko') || (killsB - killsA);
+        return (a.earth || '').localeCompare(b.earth || '', 'ko') || (killsB - killsA);
       }
       return 0;
     });
@@ -255,14 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // Traits HTML
       const traitsHtml = buildTraitsBadgesHtml(char.traits);
 
-      // Account & Character Display
-      const accountDisplay = char.account || char.name || '-';
-      const charNameDisplay = char.name || '-';
+      // Account ID (Primary) and Character Name
+      const playerAccount = char.account || char.name || '-';
+      const characterName = char.name || '-';
 
       tr.innerHTML = `
         <td class="col-earth"><span class="earth-badge">${escapeHtml(char.earth)}</span></td>
-        <td class="col-account"><strong style="color: #fff; font-size: 0.95rem;"><i class="fa-solid fa-user-circle" style="color: var(--accent-gold); margin-right: 4px;"></i>${escapeHtml(accountDisplay)}</strong></td>
-        <td class="col-name"><span style="color: var(--text-main);">${escapeHtml(charNameDisplay)}</span></td>
+        <td class="col-account"><strong style="color: var(--accent-gold); font-size: 1rem;"><i class="fa-solid fa-user" style="margin-right: 5px;"></i>${escapeHtml(playerAccount)}</strong></td>
+        <td class="col-name"><span style="color: var(--text-main); font-weight: 500;">${escapeHtml(characterName)}</span></td>
         <td class="col-status">${statusHtml}</td>
         <td class="col-kills">${killsHtml}</td>
         <td class="col-survival survival-cell"><i class="fa-regular fa-clock" style="color: var(--text-dim); margin-right: 4px;"></i>${escapeHtml(char.survivalTime || '-')}</td>
@@ -289,13 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const traitsHtml = buildTraitsBadgesHtml(char.traits);
 
       const isHighKiller = (Number(char.kills) || 0) >= 1000;
-      const accountDisplay = char.account || char.name || '-';
+      const playerAccount = char.account || char.name || '-';
 
       card.innerHTML = `
         <div class="char-card-header">
           <div class="char-card-title">
-            <h3 style="font-size: 1.2rem; color: #fff;"><i class="fa-solid fa-user-circle" style="color: var(--accent-gold); margin-right: 6px;"></i>${escapeHtml(accountDisplay)}</h3>
-            <span class="occ" style="font-size: 0.85rem; color: var(--text-muted);">${escapeHtml(char.name)} (${escapeHtml(char.occupation || '직업 미지정')})</span>
+            <h3 style="font-size: 1.25rem; color: var(--accent-gold);"><i class="fa-solid fa-user" style="margin-right: 6px;"></i>${escapeHtml(playerAccount)}</h3>
+            <span class="occ" style="font-size: 0.88rem; color: var(--text-main);">캐릭터: <strong>${escapeHtml(char.name)}</strong> (${escapeHtml(char.occupation || '직업 미지정')})</span>
           </div>
           <div>
             <span class="earth-badge">${escapeHtml(char.earth)}</span>

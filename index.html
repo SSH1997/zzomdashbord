@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=1.0.3">
 </head>
 <body>
   <div class="app-container">
@@ -56,7 +56,7 @@
       <div class="stat-card highlight">
         <div class="stat-icon trophy-icon"><i class="fa-solid fa-trophy"></i></div>
         <div class="stat-info">
-          <span class="stat-label">최다 킬 플레이어</span>
+          <span class="stat-label">최다 킬 플레이어 (아이디)</span>
           <span class="stat-value char-name-value" id="stat-top-killer">-</span>
           <span class="stat-subtext" id="stat-top-killer-kills">0 Kills</span>
         </div>
@@ -79,7 +79,7 @@
           <!-- Search Box -->
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-input" placeholder="플레이어 아이디, 캐릭터명, 직업, 특성, 메모 검색...">
+            <input type="text" id="search-input" placeholder="플레이어 아이디(Jan, prove 등), 캐릭터명, 직업, 특성 검색...">
             <button id="clear-search-btn" class="clear-btn" title="검색어 초기화"><i class="fa-solid fa-xmark"></i></button>
           </div>
 
@@ -99,8 +99,8 @@
             <label for="sort-select"><i class="fa-solid fa-sort"></i> 정렬:</label>
             <select id="sort-select">
               <option value="kills-desc">킬 수 높은순 🔥</option>
+              <option value="account-asc">플레이어 아이디순 (가나다)</option>
               <option value="kills-asc">킬 수 낮은순</option>
-              <option value="account-asc">플레이어 계정명순</option>
               <option value="name-asc">캐릭터 이름순</option>
               <option value="earth-asc">지구 순서</option>
             </select>
@@ -128,7 +128,7 @@
             <thead>
               <tr>
                 <th class="col-earth">지구</th>
-                <th class="col-account">플레이어 계정 (ID)</th>
+                <th class="col-account">플레이어 아이디 (계정)</th>
                 <th class="col-name">캐릭터 이름</th>
                 <th class="col-status">상태</th>
                 <th class="col-kills">좀비 킬 수</th>
@@ -172,8 +172,8 @@
     </footer>
   </div>
 
-  <!-- Load Data and Main Script -->
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <!-- Load Data and Main Script (with cache-busting version params) -->
+  <script src="data.js?v=1.0.3"></script>
+  <script src="app.js?v=1.0.3"></script>
 </body>
 </html>
