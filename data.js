@@ -1,6 +1,6 @@
 /**
  * ==========================================
- * 프로젝트 좀보이드 계정별/지구별 플레이어 통합 데이터베이스
+ * 프로젝트 좀보이드 1지구 플레이어 계정 통합 데이터베이스
  * (최신 서버 추출 데이터: 2026-09-26T21:09:27.085028)
  * ==========================================
  */
@@ -8,6 +8,7 @@
 const zomboidData = [
   {
     "id": 1,
+    "earth": "1지구",
     "account": "daun",
     "steamId": "76561198210496260",
     "totalKills": 0,
@@ -18,7 +19,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "마르코 맥앨리스터",
         "status": "사망",
         "kills": 0,
@@ -66,6 +67,7 @@ const zomboidData = [
   },
   {
     "id": 2,
+    "earth": "1지구",
     "account": "TIGER",
     "steamId": "76561198366619620",
     "totalKills": 0,
@@ -76,7 +78,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "랑이2호 대단한",
         "status": "생존",
         "kills": 0,
@@ -96,6 +98,7 @@ const zomboidData = [
   },
   {
     "id": 3,
+    "earth": "1지구",
     "account": "Jan",
     "steamId": "76561198163443420",
     "totalKills": 0,
@@ -106,7 +109,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "캐서린 앤더스",
         "status": "생존",
         "kills": 0,
@@ -124,7 +127,7 @@ const zomboidData = [
       },
       {
         "order": 2,
-        "earth": "3지구 (09/26 13:47 백업)",
+        "earth": "1지구",
         "name": "제인 스톰",
         "status": "생존",
         "kills": 0,
@@ -142,7 +145,7 @@ const zomboidData = [
       },
       {
         "order": 3,
-        "earth": "4지구 (09/25 23:07 백업)",
+        "earth": "1지구",
         "name": "브룩 플랫",
         "status": "생존",
         "kills": 0,
@@ -160,7 +163,7 @@ const zomboidData = [
       },
       {
         "order": 4,
-        "earth": "5지구 (09/25 21:09 백업)",
+        "earth": "1지구",
         "name": "세르히오 네스",
         "status": "생존",
         "kills": 0,
@@ -188,6 +191,7 @@ const zomboidData = [
   },
   {
     "id": 4,
+    "earth": "1지구",
     "account": "prove",
     "steamId": "76561198318530720",
     "totalKills": 15,
@@ -198,7 +202,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "해롤드 바움가드너",
         "status": "생존",
         "kills": 15,
@@ -213,6 +217,7 @@ const zomboidData = [
   },
   {
     "id": 5,
+    "earth": "1지구",
     "account": "bradley02",
     "steamId": "76561199146671870",
     "totalKills": 0,
@@ -223,7 +228,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "다렐 이스라엘",
         "status": "생존",
         "kills": 0,
@@ -263,6 +268,7 @@ const zomboidData = [
   },
   {
     "id": 6,
+    "earth": "1지구",
     "account": "gyear",
     "steamId": "76561198856221580",
     "totalKills": 2,
@@ -273,7 +279,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "노리스 레이니",
         "status": "생존",
         "kills": 2,
@@ -288,6 +294,7 @@ const zomboidData = [
   },
   {
     "id": 7,
+    "earth": "1지구",
     "account": "ANTE",
     "steamId": "76561198119863420",
     "totalKills": 12,
@@ -298,7 +305,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "호세 윅스",
         "status": "생존",
         "kills": 12,
@@ -326,6 +333,7 @@ const zomboidData = [
   },
   {
     "id": 8,
+    "earth": "1지구",
     "account": "JINDOL",
     "steamId": "76561199546981800",
     "totalKills": 0,
@@ -336,7 +344,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "1지구 (현재 세이브)",
+        "earth": "1지구",
         "name": "랜달 맥도넬",
         "status": "생존",
         "kills": 0,
@@ -364,6 +372,7 @@ const zomboidData = [
   },
   {
     "id": 9,
+    "earth": "1지구",
     "account": "sshtest",
     "steamId": "76561198318530720",
     "totalKills": 0,
@@ -374,7 +383,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "2지구 (09/26 19:02 백업)",
+        "earth": "1지구",
         "name": "엘리스 하우",
         "status": "사망",
         "kills": 0,
@@ -392,7 +401,7 @@ const zomboidData = [
       },
       {
         "order": 2,
-        "earth": "3지구 (09/26 13:47 백업)",
+        "earth": "1지구",
         "name": "안젤라 바워스",
         "status": "생존",
         "kills": 0,
@@ -412,6 +421,7 @@ const zomboidData = [
   },
   {
     "id": 10,
+    "earth": "1지구",
     "account": "sshtest1",
     "steamId": "76561198318530720",
     "totalKills": 0,
@@ -422,7 +432,7 @@ const zomboidData = [
     "characters": [
       {
         "order": 1,
-        "earth": "4지구 (09/25 23:07 백업)",
+        "earth": "1지구",
         "name": "이사야 플래허티",
         "status": "생존",
         "kills": 0,
