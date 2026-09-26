@@ -1,7 +1,6 @@
 /**
  * ==========================================
- * 프로젝트 좀보이드 1지구 현재 활성 서버 세이브 데이터베이스
- * (백업 데이터 완전 제거 / 활성 세이브 8명 전용)
+ * 프로젝트 좀보이드 1지구 전체 플레이어 데이터베이스 (총 14개 캐릭터 이력)
  * (추출 일시: 2026-09-26T21:09:27.085028)
  * ==========================================
  */
@@ -104,9 +103,9 @@ const zomboidData = [
     "steamId": "76561198163443420",
     "totalKills": 0,
     "deathCount": 0,
-    "totalSurvivalHours": 0,
-    "totalSurvivalTime": "0.0시간 (0.0일)",
-    "characterCount": 1,
+    "totalSurvivalHours": 8.27,
+    "totalSurvivalTime": "8.3시간 (0.3일)",
+    "characterCount": 4,
     "characters": [
       {
         "order": 1,
@@ -125,6 +124,68 @@ const zomboidData = [
         ],
         "location": "X: 13073.6, Y: 1912.7, Z: 0",
         "lastSaved": "2026-09-26 21:09:04"
+      },
+      {
+        "order": 2,
+        "earth": "1지구",
+        "name": "제인 스톰",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 4.95,
+        "survivalTime": "4.95시간 (0.2일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "일요일 운전자 (Sunday Driver)",
+            "type": "neg"
+          }
+        ],
+        "location": "X: 12426.8, Y: 1423.8, Z: 0",
+        "lastSaved": "2026-09-25 23:31:15"
+      },
+      {
+        "order": 3,
+        "earth": "1지구",
+        "name": "브룩 플랫",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 3.32,
+        "survivalTime": "3.32시간 (0.1일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "base:unemployed",
+            "type": "neg"
+          }
+        ],
+        "location": "X: 12428.8, Y: 1423.6, Z: 0",
+        "lastSaved": "2026-09-25 23:00:20"
+      },
+      {
+        "order": 4,
+        "earth": "1지구",
+        "name": "세르히오 네스",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "평화주의자 (Pacifist)",
+            "type": "pos"
+          },
+          {
+            "name": "등 근육 [모드:적재량+] (Strong Back)",
+            "type": "mod"
+          },
+          {
+            "name": "정비 숙련 [모드] (Mechanics Skill)",
+            "type": "mod"
+          }
+        ],
+        "location": "X: 13219.5, Y: 1539.5, Z: 0",
+        "lastSaved": "2026-09-25 21:08:39"
       }
     ]
   },
@@ -306,6 +367,98 @@ const zomboidData = [
         ],
         "location": "X: 13396.5, Y: 1505.7, Z: 0",
         "lastSaved": "2026-09-26 21:09:04"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "earth": "1지구",
+    "account": "sshtest",
+    "steamId": "76561198318530720",
+    "totalKills": 0,
+    "deathCount": 1,
+    "totalSurvivalHours": 4.58,
+    "totalSurvivalTime": "4.6시간 (0.2일)",
+    "characterCount": 2,
+    "characters": [
+      {
+        "order": 1,
+        "earth": "1지구",
+        "name": "엘리스 하우",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "base:unemployed",
+            "type": "neg"
+          }
+        ],
+        "location": "X: 14101.7, Y: 2846, Z: 0",
+        "lastSaved": "2026-09-26 13:51:49"
+      },
+      {
+        "order": 2,
+        "earth": "1지구",
+        "name": "안젤라 바워스",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 4.58,
+        "survivalTime": "4.58시간 (0.2일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "base:unemployed",
+            "type": "neg"
+          }
+        ],
+        "location": "X: 12185.2, Y: 1481.2, Z: 1",
+        "lastSaved": "2026-09-25 23:31:15"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "earth": "1지구",
+    "account": "sshtest1",
+    "steamId": "76561198318530720",
+    "totalKills": 0,
+    "deathCount": 0,
+    "totalSurvivalHours": 4.82,
+    "totalSurvivalTime": "4.8시간 (0.2일)",
+    "characterCount": 1,
+    "characters": [
+      {
+        "order": 1,
+        "earth": "1지구",
+        "name": "이사야 플래허티",
+        "status": "생존",
+        "kills": 0,
+        "survivalHours": 4.82,
+        "survivalTime": "4.82시간 (0.2일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [
+          {
+            "name": "etw:paranoia",
+            "type": "neg"
+          },
+          {
+            "name": "응급처치 지식 (First Aid)",
+            "type": "pos"
+          },
+          {
+            "name": "etw:homecook",
+            "type": "mod"
+          },
+          {
+            "name": "etw:paintolerance",
+            "type": "mod"
+          }
+        ],
+        "location": "X: 13694.6, Y: 2843, Z: 0",
+        "lastSaved": "2026-09-25 23:00:20"
       }
     ]
   }
