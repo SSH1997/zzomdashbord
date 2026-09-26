@@ -453,14 +453,15 @@ body {
   background-color: var(--bg-card-hover);
 }
 
-.col-earth { width: 90px; }
-.col-name { width: 160px; font-weight: 700; color: #fff; }
-.col-status { width: 100px; }
-.col-kills { width: 140px; }
-.col-survival { width: 120px; }
-.col-occupation { width: 110px; }
+.col-earth { min-width: 95px; white-space: nowrap; }
+.col-account { min-width: 140px; font-weight: 700; color: #fff; white-space: nowrap; }
+.col-name { min-width: 150px; white-space: nowrap; }
+.col-status { min-width: 110px; white-space: nowrap; }
+.col-kills { min-width: 130px; white-space: nowrap; }
+.col-survival { min-width: 160px; white-space: nowrap; }
+.col-occupation { min-width: 120px; white-space: nowrap; }
 .col-traits { min-width: 250px; }
-.col-notes { min-width: 220px; color: var(--text-muted); font-size: 0.85rem; }
+.col-notes { min-width: 200px; color: var(--text-muted); font-size: 0.85rem; }
 
 .earth-badge {
   display: inline-block;
@@ -472,6 +473,7 @@ body {
   font-size: 0.8rem;
   font-weight: 700;
   text-align: center;
+  white-space: nowrap;
 }
 
 .status-badge {
@@ -482,6 +484,11 @@ body {
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.survival-cell {
+  white-space: nowrap;
 }
 
 .status-badge.alive {

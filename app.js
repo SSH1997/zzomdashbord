@@ -1,5 +1,6 @@
 /**
  * Project Zomboid Dashboard - Core Application Logic
+ * Configured for Primary Player Account ID Display & Single-Line Column Layout
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uniqueEarths = new Set(dataset.map(item => item.earth));
     statTotalEarths.textContent = uniqueEarths.size;
 
-    // Total Characters
+    // Total Players
     statTotalChars.textContent = dataset.length;
 
     // Total Kills
@@ -71,8 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, dataset[0]);
 
     if (topKiller) {
-      statTopKiller.textContent = topKiller.name;
-      statTopKillerKills.textContent = `${(Number(topKiller.kills) || 0).toLocaleString()} Kills (${topKiller.earth})`;
+      const displayId = topKiller.account || topKiller.name;
+      statTopKiller.textContent = displayId;
+      statTopKillerKills.textContent = `${(Number(topKiller.kills) || 0).toLocaleString()} Kills (${topKiller.name} / ${topKiller.earth})`;
     }
   }
 
@@ -171,20 +173,21 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered = filtered.filter(item => item.status === currentStatusFilter);
     }
 
-    // 3. Search Query Filter (name, occupation, traits, notes, earth)
+    // 3. Search Query Filter (account, name, occupation, traits, notes, earth)
     if (currentSearchQuery) {
       filtered = filtered.filter(item => {
-        const nameMatch = item.name.toLowerCase().includes(currentSearchQuery);
+        const accountMatch = item.account && item.account.toLowerCase().includes(currentSearchQuery);
+        const nameMatch = item.name && item.name.toLowerCase().includes(currentSearchQuery);
         const occupationMatch = item.occupation && item.occupation.toLowerCase().includes(currentSearchQuery);
         const notesMatch = item.deathCause && item.deathCause.toLowerCase().includes(currentSearchQuery);
-        const earthMatch = item.earth.toLowerCase().includes(currentSearchQuery);
+        const earthMatch = item.earth && item.earth.toLowerCase().includes(currentSearchQuery);
 
         const traitsMatch = Array.isArray(item.traits) && item.traits.some(t => {
           const traitName = typeof t === 'string' ? t : t.name;
           return traitName.toLowerCase().includes(currentSearchQuery);
         });
 
-        return nameMatch || occupationMatch || notesMatch || earthMatch || traitsMatch;
+        return accountMatch || nameMatch || occupationMatch || notesMatch || earthMatch || traitsMatch;
       });
     }
 
@@ -197,6 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return killsB - killsA;
       } else if (currentSortOption === 'kills-asc') {
         return killsA - killsB;
+      } else if (currentSortOption === 'account-asc') {
+        return (a.account || a.name).localeCompare(b.account || b.name, 'ko');
       } else if (currentSortOption === 'name-asc') {
         return a.name.localeCompare(b.name, 'ko');
       } else if (currentSortOption === 'earth-asc') {
@@ -243,22 +248,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const isHighKiller = (Number(char.kills) || 0) >= 1000;
       const killsHtml = `
         <span class="kill-count-badge ${isHighKiller ? 'high-killer' : ''}">
-          <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()}
+          <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()} 킬
         </span>
       `;
 
       // Traits HTML
       const traitsHtml = buildTraitsBadgesHtml(char.traits);
 
+      // Account & Character Display
+      const accountDisplay = char.account || char.name || '-';
+      const charNameDisplay = char.name || '-';
+
       tr.innerHTML = `
-        <td><span class="earth-badge">${escapeHtml(char.earth)}</span></td>
-        <td><strong>${escapeHtml(char.name)}</strong></td>
-        <td>${statusHtml}</td>
-        <td>${killsHtml}</td>
-        <td><i class="fa-regular fa-clock" style="color: var(--text-dim); margin-right: 4px;"></i> ${escapeHtml(char.survivalTime || '-')}</td>
-        <td><span class="occupation-tag">${escapeHtml(char.occupation || '-')}</span></td>
-        <td><div class="traits-wrapper">${traitsHtml}</div></td>
-        <td>${escapeHtml(char.deathCause || '-')}</td>
+        <td class="col-earth"><span class="earth-badge">${escapeHtml(char.earth)}</span></td>
+        <td class="col-account"><strong style="color: #fff; font-size: 0.95rem;"><i class="fa-solid fa-user-circle" style="color: var(--accent-gold); margin-right: 4px;"></i>${escapeHtml(accountDisplay)}</strong></td>
+        <td class="col-name"><span style="color: var(--text-main);">${escapeHtml(charNameDisplay)}</span></td>
+        <td class="col-status">${statusHtml}</td>
+        <td class="col-kills">${killsHtml}</td>
+        <td class="col-survival survival-cell"><i class="fa-regular fa-clock" style="color: var(--text-dim); margin-right: 4px;"></i>${escapeHtml(char.survivalTime || '-')}</td>
+        <td class="col-occupation"><span class="occupation-tag">${escapeHtml(char.occupation || '-')}</span></td>
+        <td class="col-traits"><div class="traits-wrapper">${traitsHtml}</div></td>
+        <td class="col-notes">${escapeHtml(char.deathCause || '-')}</td>
       `;
 
       characterTableBody.appendChild(tr);
@@ -279,12 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const traitsHtml = buildTraitsBadgesHtml(char.traits);
 
       const isHighKiller = (Number(char.kills) || 0) >= 1000;
+      const accountDisplay = char.account || char.name || '-';
 
       card.innerHTML = `
         <div class="char-card-header">
           <div class="char-card-title">
-            <h3>${escapeHtml(char.name)}</h3>
-            <span class="occ">${escapeHtml(char.occupation || '직업 미지정')}</span>
+            <h3 style="font-size: 1.2rem; color: #fff;"><i class="fa-solid fa-user-circle" style="color: var(--accent-gold); margin-right: 6px;"></i>${escapeHtml(accountDisplay)}</h3>
+            <span class="occ" style="font-size: 0.85rem; color: var(--text-muted);">${escapeHtml(char.name)} (${escapeHtml(char.occupation || '직업 미지정')})</span>
           </div>
           <div>
             <span class="earth-badge">${escapeHtml(char.earth)}</span>
@@ -299,12 +310,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="card-stat-row">
             <span class="card-stat-label">처치한 좀비</span>
             <span class="kill-count-badge ${isHighKiller ? 'high-killer' : ''}">
-              <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()}
+              <i class="fa-solid fa-crosshairs"></i> ${(Number(char.kills) || 0).toLocaleString()} 킬
             </span>
           </div>
           <div class="card-stat-row">
             <span class="card-stat-label">생존 기간</span>
-            <span class="card-stat-val">${escapeHtml(char.survivalTime || '-')}</span>
+            <span class="card-stat-val survival-cell">${escapeHtml(char.survivalTime || '-')}</span>
           </div>
 
           <div style="margin-top: 0.25rem;">
