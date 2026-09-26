@@ -1,7 +1,7 @@
 /**
  * ==========================================
  * 프로젝트 좀보이드 1지구 플레이어 계정/캐릭터 데이터베이스
- * (최신 서버 자동 추출: 2026-09-26T23:15:09.672376)
+ * (최신 서버 자동 추출: 2026-09-26T23:16:59.191766)
  * ==========================================
  */
 
@@ -12,13 +12,26 @@ const zomboidData = [
     "account": "daun",
     "steamId": "76561198210496256",
     "totalKills": 33,
-    "deathCount": 0,
+    "deathCount": 1,
     "totalSurvivalHours": 20.67,
     "totalSurvivalTime": "20.7시간 (0.9일)",
-    "characterCount": 1,
+    "characterCount": 2,
     "characters": [
       {
         "order": 1,
+        "earth": "1지구",
+        "name": "daun 1차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 2,
         "earth": "1지구",
         "name": "마르코 맥앨리스터",
         "status": "생존",
@@ -57,7 +70,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13688.6, Y: 1791.8, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -67,13 +80,39 @@ const zomboidData = [
     "account": "JINDOL",
     "steamId": "76561199546981794",
     "totalKills": 16,
-    "deathCount": 0,
+    "deathCount": 2,
     "totalSurvivalHours": 19.57,
     "totalSurvivalTime": "19.6시간 (0.8일)",
-    "characterCount": 1,
+    "characterCount": 3,
     "characters": [
       {
         "order": 1,
+        "earth": "1지구",
+        "name": "JINDOL 1차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 2,
+        "earth": "1지구",
+        "name": "JINDOL 2차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 3,
         "earth": "1지구",
         "name": "에이브 내시",
         "status": "생존",
@@ -92,7 +131,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13314.6, Y: 1447.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -139,7 +178,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13966.4, Y: 3237.0, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -186,7 +225,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13113.8, Y: 1802.3, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -196,13 +235,26 @@ const zomboidData = [
     "account": "ANTE",
     "steamId": "76561198119863420",
     "totalKills": 8,
-    "deathCount": 0,
+    "deathCount": 1,
     "totalSurvivalHours": 17.18,
     "totalSurvivalTime": "17.2시간 (0.7일)",
-    "characterCount": 1,
+    "characterCount": 2,
     "characters": [
       {
         "order": 1,
+        "earth": "1지구",
+        "name": "ANTE 1차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 2,
         "earth": "1지구",
         "name": "호세 윅스",
         "status": "생존",
@@ -225,7 +277,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13748.3, Y: 3002.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -235,13 +287,26 @@ const zomboidData = [
     "account": "TIGER",
     "steamId": "76561198366619616",
     "totalKills": 5,
-    "deathCount": 0,
+    "deathCount": 1,
     "totalSurvivalHours": 19.54,
     "totalSurvivalTime": "19.5시간 (0.8일)",
-    "characterCount": 2,
+    "characterCount": 3,
     "characters": [
       {
         "order": 1,
+        "earth": "1지구",
+        "name": "TIGER 1차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 2,
         "earth": "1지구",
         "name": "랑이 대단한",
         "status": "생존",
@@ -256,10 +321,10 @@ const zomboidData = [
           }
         ],
         "location": "X: 13223.1, Y: 1461.2, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       },
       {
-        "order": 2,
+        "order": 3,
         "earth": "1지구",
         "name": "랑이2호 대단한",
         "status": "생존",
@@ -274,7 +339,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 12586.2, Y: 1990.5, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -284,13 +349,26 @@ const zomboidData = [
     "account": "gyear",
     "steamId": "76561198856221583",
     "totalKills": 2,
-    "deathCount": 0,
+    "deathCount": 1,
     "totalSurvivalHours": 16.69,
     "totalSurvivalTime": "16.7시간 (0.7일)",
-    "characterCount": 2,
+    "characterCount": 3,
     "characters": [
       {
         "order": 1,
+        "earth": "1지구",
+        "name": "gyear 1차 캐릭터 (사망)",
+        "status": "사망",
+        "kills": 0,
+        "survivalHours": 0.0,
+        "survivalTime": "0.00시간 (0.0일)",
+        "occupation": "무직 (Unemployed)",
+        "traits": [],
+        "location": "1지구 사망",
+        "lastSaved": "1지구"
+      },
+      {
+        "order": 2,
         "earth": "1지구",
         "name": "노리스 레이니",
         "status": "생존",
@@ -321,10 +399,10 @@ const zomboidData = [
           }
         ],
         "location": "X: 13413.6, Y: 1674.9, Z: 1.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       },
       {
-        "order": 2,
+        "order": 3,
         "earth": "1지구",
         "name": "벌 트렘블레이",
         "status": "생존",
@@ -355,7 +433,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 13496.6, Y: 1628.7, Z: 1.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   },
@@ -390,7 +468,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 14169.5, Y: 2720.7, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       },
       {
         "order": 2,
@@ -412,7 +490,7 @@ const zomboidData = [
           }
         ],
         "location": "X: 14112.0, Y: 2880.5, Z: 0.0",
-        "lastSaved": "2026-09-26 23:15:09"
+        "lastSaved": "2026-09-26 23:16:59"
       }
     ]
   }
